@@ -1,23 +1,24 @@
 package com.codepath.simpletodo;
 
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
+
 import java.io.Serializable;
 
 /**
  * Created by paperspace on 2/26/2017.
  */
+@Table(database = MyDatabase.class)
+public class TaskItem extends BaseModel implements Serializable {
 
-public class TaskItem implements Serializable {
+    @Column
+    @PrimaryKey(rowID = true)
+    int id;
 
-    private int position;
+    @Column
     private String text;
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
 
     public String getText() {
         return text;

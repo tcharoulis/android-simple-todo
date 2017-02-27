@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 public class EditItemActivity extends AppCompatActivity {
 
-    private String TASK_ITEM_KEY = "task.item";
+    private String TASK_ITEM_KEY = MainActivity.TASK_ITEM_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +24,14 @@ public class EditItemActivity extends AppCompatActivity {
 
     public void onSaveItem(View v) {
         EditText tv = (EditText) findViewById(R.id.editText);
-        TaskItem ti = (TaskItem) getIntent().getSerializableExtra(TASK_ITEM_KEY);
+        TaskItem taskItem = (TaskItem) getIntent().getSerializableExtra(TASK_ITEM_KEY);
 
-        Intent i = new Intent();
-        TaskItem nti = new TaskItem();
-        nti.setText(tv.getText().toString());
-        nti.setPosition(ti.getPosition());
-        i.putExtra(TASK_ITEM_KEY, nti);
-        setResult(RESULT_OK, i);
+        Intent intent = new Intent();
+        TaskItem newTaskItem = new TaskItem();
+        newTaskItem.setText(tv.getText().toString());
+        newTaskItem.id = taskItem.id;
+        intent.putExtra(TASK_ITEM_KEY, newTaskItem);
+        setResult(RESULT_OK, intent);
         finish();
     }
 }
