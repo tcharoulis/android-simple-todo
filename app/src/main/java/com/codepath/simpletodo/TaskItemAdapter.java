@@ -2,11 +2,9 @@ package com.codepath.simpletodo;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -18,25 +16,21 @@ public class TaskItemAdapter extends ArrayAdapter<TaskItem> {
 
 
     public TaskItemAdapter(Context context, List<TaskItem> objects) {
+
         super(context, 0, objects);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.item_todo, null);
+        TaskItemView taskItemView = (TaskItemView) convertView;
+        if (taskItemView == null) {
+            taskItemView = TaskItemView.inflate(parent);
         }
 
         TaskItem taskItem = getItem(position);
-        bindView(convertView, this.getContext(), taskItem);
-        return convertView;
+        taskItemView.setTaskItem(taskItem);
+        return taskItemView;
     }
 
-    private void bindView(View view, Context context, TaskItem taskItem) {
-        // Find fields to populate in inflated template
-        TextView taskItemTxt = (TextView) view.findViewById(R.id.taskItemName);
-        // Populate fields with extracted properties
-        taskItemTxt.setText( taskItem.getText());
-    }
 }
