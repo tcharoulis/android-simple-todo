@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by paperspace on 2/27/2017.
  */
@@ -14,6 +16,9 @@ import android.widget.TextView;
 public class TaskItemView extends RelativeLayout {
 
     private TextView taskItemTxt;
+    private TextView dueDateTxt;
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat(EditItemActivity.DATE_FORMAT);
 
     public TaskItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -29,6 +34,7 @@ public class TaskItemView extends RelativeLayout {
 
     private void setupChildren() {
         taskItemTxt = (TextView) findViewById(R.id.taskItemName);
+        dueDateTxt = (TextView) findViewById(R.id.dueDate);
     }
 
     public static TaskItemView inflate(ViewGroup parent) {
@@ -37,5 +43,8 @@ public class TaskItemView extends RelativeLayout {
 
     public void setTaskItem(TaskItem taskItem) {
         taskItemTxt.setText( taskItem.getText());
+        if (taskItem.getDueDate() != null) {
+            dueDateTxt.setText(sdf.format(taskItem.getDueDate()));
+        }
     }
 }

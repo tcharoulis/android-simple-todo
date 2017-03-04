@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             TaskItem editedTaskItem = (TaskItem) data.getSerializableExtra(TASK_ITEM_KEY);
             TaskItem itemInList = getItem(editedTaskItem.id);
             itemInList.setText(editedTaskItem.getText());
+            itemInList.setDueDate(editedTaskItem.getDueDate());
             itemsAdapter.notifyDataSetChanged();
             itemInList.update();
         }
