@@ -2,19 +2,21 @@ package com.codepath.simpletodo;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.widget.DatePicker;
-import android.widget.EditText;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by paperspace on 2/27/2017.
  */
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+    private DateSetListener dateSetListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -34,8 +36,17 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DATE, dayOfMonth);
-        EditText dueDateView = (EditText) getActivity().findViewById(R.id.dueDateTxt);
-        SimpleDateFormat sdf = new SimpleDateFormat(EditItemActivity.DATE_FORMAT);
-        dueDateView.setText(sdf.format(c.getTime()));
+        this.dateSetListener.onDateSet(c.getTime());
+    }
+
+    public static void show(FragmentManager fragmentManager, DateSetListener onDateSet) {
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.dateSetListener = onDateSet;
+        newFragment.show(fragmentManager, "datePicker");
+    }
+
+    public interface DateSetListener {
+
+        void onDateSet(Date d);
     }
 }

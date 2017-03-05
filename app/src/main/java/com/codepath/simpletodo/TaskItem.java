@@ -15,6 +15,8 @@ import java.util.Date;
 @Table(database = MyDatabase.class)
 public class TaskItem extends BaseModel implements Serializable {
 
+    public static final String DATE_FORMAT = "yyyy/MM/dd";
+
     @Column
     @PrimaryKey(rowID = true)
     int id;

@@ -18,7 +18,7 @@ public class TaskItemView extends RelativeLayout {
     private TextView taskItemTxt;
     private TextView dueDateTxt;
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat(EditItemActivity.DATE_FORMAT);
+    private static final SimpleDateFormat sdf = new SimpleDateFormat(TaskItem.DATE_FORMAT);
 
     public TaskItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);

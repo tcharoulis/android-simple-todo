@@ -2,10 +2,10 @@ package com.codepath.simpletodo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements EditTaskItemDialogFragment.SaveTaskItemListener {
 
     private int EDIT_TASK_REQUEST_CODE = 20;
     static String TASK_ITEM_KEY = "task.item";
@@ -50,10 +50,8 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(MainActivity.this, EditItemActivity.class);
                 TaskItem item = items.get(position);
-                i.putExtra(TASK_ITEM_KEY, item);
-                startActivityForResult(i, EDIT_TASK_REQUEST_CODE);
+                showEditDialog(item);
             }
         });
     }
@@ -82,19 +80,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onAddItem(View v) {
-        EditText editText = (EditText) findViewById(R.id.etNewItem);
-        String itemText = editText.getText().toString();
         TaskItem item = new TaskItem();
-        item.setText(itemText);
-        itemsAdapter.add(item);
-        editText.setText("");
-        item.save();
+        showEditDialog(item);
     }
 
     private void readItems() {
         items = SQLite.select().from(TaskItem.class).queryList();
         if (items == null) {
             items = new ArrayList<>();
+        }
+    }
+
+    private void showEditDialog(TaskItem taskItem) {
+        FragmentManager fm = getSupportFragmentManager();
+        String dialogTitle = taskItem.id > 0 ? "Edit" : "New";
+        EditTaskItemDialogFragment editNameDialogFragment = EditTaskItemDialogFragment.newInstance(taskItem);
+        editNameDialogFragment.show(fm, "activity_edit_item");
+    }
+
+    @Override
+    public void onSave(TaskItem taskItem) {
+        if (taskItem.id > 0) {
+            taskItem.update();
+            itemsAdapter.notifyDataSetChanged();
+        } else {
+            taskItem.save();
+            itemsAdapter.add(taskItem);
         }
     }
 }
